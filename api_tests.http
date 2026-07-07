@@ -1,0 +1,7 @@
+### Test Fetching Eniitan's Profile Info
+GET http://localhost:3000/api/profile/1
+
+###
+
+### Test Fetching Eniitan's Portfolio Projects
+GET http://localhost:3000/api/profile/1/projects
