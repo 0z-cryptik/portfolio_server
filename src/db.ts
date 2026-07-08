@@ -1,13 +1,14 @@
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+import type { Pool } from "./types/customTypes.js";
 
 dotenv.config();
 
 // We check if a connection pool already exists globally to prevent
 // serverless functions from creating duplicates on every single invocation.
-let pool: mysql.Pool;
+let pool: Pool;
 
-export function getDatabasePool(): mysql.Pool {
+export function getDatabasePool(): Pool {
   if (!pool) {
     pool = mysql.createPool({
       // This accommodates both your local string or your live Aiven.io URI string
