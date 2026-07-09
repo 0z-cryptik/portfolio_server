@@ -50,7 +50,6 @@ export async function deleteProfileSkill(
 
     const updatedProfile = await fetchProfileAndSkills(pool, profileId);
     res.status(200).json(updatedProfile);
-    console.log("success");
   } catch (e: any) {
     console.error(e);
     res.status(500).json({ error: e.message || "Internal Server Error" });
