@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
 import type { ResultSetHeader } from "mysql2";
 import type { Pool } from "../types/customTypes.js";
-import { fetchProfileAndSkills } from "./fetchProfileAndSkills.js";
+import { fetchProfileAndSkills } from "../helperFuntions/fetchProfileAndSkills.js";
 
 export async function updateUserProfile(
   req: Request,
   res: Response,
-  pool: Pool,
+  pool: Pool
 ) {
   const profileId = req.params.id;
   const { field, newValue } = req.body;
@@ -40,7 +40,7 @@ export async function updateUserProfile(
     return;
   }
 
-  const allowedFields = ["full_name", "email", "about_me"];
+  const allowedFields = ["full_name", "email", "about_me", "skills"];
 
   if (!allowedFields.includes(field)) {
     res.status(400).json({ error: "Invalid field" });
