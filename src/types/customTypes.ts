@@ -13,5 +13,14 @@ export interface Profile extends RowDataPacket {
 }
 
 export interface Skills extends RowDataPacket {
-    skill_name: string;
+  skill_name: string;
+}
+
+export interface Projects extends RowDataPacket {
+  title: string;
+  description: string;
+  repo_link: string;
+  backend_repo?: string;
+  live_link?: string;
+  show_on_cv?: boolean;
 }

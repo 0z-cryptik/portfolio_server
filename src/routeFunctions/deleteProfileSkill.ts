@@ -1,7 +1,6 @@
 import type { ResultSetHeader, RowDataPacket } from "mysql2";
 import type { Pool } from "../types/customTypes.js";
 import type { Request, Response } from "express";
-import { error } from "console";
 import { fetchProfileAndSkills } from "../helperFuntions/fetchProfileAndSkills.js";
 
 export async function deleteProfileSkill(

@@ -10,6 +10,7 @@ import { getUserProjects } from "./routeFunctions/getUserProjects.js";
 import { updateUserProfile } from "./routeFunctions/updateUserProfile.js";
 import { addNewSkill } from "./routeFunctions/addNewSkill.js";
 import { deleteProfileSkill } from "./routeFunctions/deleteProfileSkill.js";
+import { updateProject } from "./routeFunctions/updateProject.js";
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(express.json());
 
 const pool = getDatabasePool();
 
+// PROFILE
 app.get("/api/profile/:id", (req: Request, res: Response) => {
   getUserProfile(req, res, pool);
 });
@@ -35,6 +37,11 @@ app.post("/api/profile/:id/skills", (req: Request, res: Response) => {
 
 app.delete("/api/profile/:id/skills", (req: Request, res: Response) => {
   deleteProfileSkill(req, res, pool);
+});
+
+// PROJECTS
+app.put("/api/profile/:id/projects/", (req: Request, res: Response) => {
+  updateProject(req, res, pool);
 });
 
 const PORT = process.env.PORT || 3000;

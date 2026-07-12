@@ -9,20 +9,16 @@ export async function getUserProjects(
   const profileId = req.params.id;
 
   try {
-    // Fetch all projects for this user
     const [projects]: any = await pool.query(
       "SELECT project_id, title, description, repo_link, live_link FROM projects WHERE profile_id = ?",
       [profileId]
     );
 
-    // If the user has no projects, return a clean empty array
     if (projects.length === 0) {
       res.json([]);
       return;
     }
 
-    // To keep things perfectly normalized without firing queries in a heavy loop,
-    // we fetch ALL skill mappings for this user's projects in one clean single join execution
     const [projectSkills]: any = await pool.query(
       `SELECT ps.project_id, s.skill_name 
              FROM project_skills ps INNER JOIN skills s 
@@ -46,7 +42,7 @@ export async function getUserProjects(
       // STEP 3: Combine everything into the final project object
       return {
         ...project,
-        tech_stack: skillNamesOnly
+        skills: skillNamesOnly
       };
     });
 
