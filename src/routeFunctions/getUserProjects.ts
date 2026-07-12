@@ -1,4 +1,4 @@
-import type { Pool } from "../types/customTypes.js";
+import type { Pool, Project, Skill } from "../types/customTypes.js";
 import type { Request, Response } from "express";
 
 export async function getUserProjects(
@@ -9,7 +9,7 @@ export async function getUserProjects(
   const profileId = req.params.id;
 
   try {
-    const [projects]: any = await pool.query(
+    const [projects] = await pool.query<Project[]>(
       "SELECT project_id, title, description, repo_link, live_link FROM projects WHERE profile_id = ?",
       [profileId]
     );
@@ -24,11 +24,11 @@ export async function getUserProjects(
              FROM project_skills ps INNER JOIN skills s 
              ON ps.skill_id = s.skill_id
              WHERE ps.project_id IN (?)`,
-      [projects.map((p: any) => p.project_id)]
+      [projects.map((p: Project) => `${p.project_id}`)]
     );
 
     // Map the flat skill rows into their corresponding project objects
-    const projectsWithSkills = projects.map((project: any) => {
+    const projectsWithSkills = projects.map((project: Project) => {
       // STEP 1: Filter out ONLY the rows belonging to this specific project
       const matchingSkillRows = projectSkills.filter((ps: any) => {
         return ps.project_id === project.project_id;

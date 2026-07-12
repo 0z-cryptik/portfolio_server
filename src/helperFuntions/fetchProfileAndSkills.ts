@@ -1,4 +1,4 @@
-import type { Pool, Profile, Skills } from "../types/customTypes.js";
+import type { Pool, Profile, Skill } from "../types/customTypes.js";
 
 async function fetchProfile(
   pool: Pool,
@@ -15,8 +15,8 @@ async function fetchProfile(
 async function fetchSkills(
   pool: Pool,
   profileId: string
-): Promise<Skills[]> {
-  const [skillRows] = await pool.query<Skills[]>(
+): Promise<Skill[]> {
+  const [skillRows] = await pool.query<Skill[]>(
     `SELECT s.skill_name 
         FROM skills s INNER JOIN profile_skills ps
         ON s.skill_id = ps.skill_id

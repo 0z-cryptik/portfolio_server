@@ -12,11 +12,13 @@ export interface Profile extends RowDataPacket {
   twitter_url?: string;
 }
 
-export interface Skills extends RowDataPacket {
+export interface Skill extends RowDataPacket {
+  skill_id: number;
   skill_name: string;
 }
 
-export interface Projects extends RowDataPacket {
+export interface Project extends RowDataPacket {
+  project_id: number;
   title: string;
   description: string;
   repo_link: string;
