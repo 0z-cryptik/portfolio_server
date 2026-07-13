@@ -53,7 +53,7 @@ export async function addNewSkill(
       return;
     }
 
-    await pool.query<ResultSetHeader>(
+    await pool.query(
       `INSERT INTO profile_skills (skill_id, profile_id) VALUES (?, ?)`,
       [skillId, profileId]
     );

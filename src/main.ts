@@ -11,6 +11,7 @@ import { updateUserProfile } from "./routeFunctions/updateUserProfile.js";
 import { addNewSkill } from "./routeFunctions/addNewSkill.js";
 import { deleteProfileSkill } from "./routeFunctions/deleteProfileSkill.js";
 import { updateProject } from "./routeFunctions/updateProject.js";
+import { addProjectSkill } from "./routeFunctions/addProjectSkill.js";
 
 const app = express();
 app.use(cors());
@@ -43,6 +44,13 @@ app.delete("/api/profile/:id/skills", (req: Request, res: Response) => {
 app.put("/api/profile/:id/projects/", (req: Request, res: Response) => {
   updateProject(req, res, pool);
 });
+
+app.post(
+  "/api/profile/:id/projects/skills/",
+  (req: Request, res: Response) => {
+    addProjectSkill(req, res, pool);
+  }
+);
 
 const PORT = process.env.PORT || 3000;
 
