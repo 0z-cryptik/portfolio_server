@@ -42,6 +42,6 @@ export async function fetchProfileAndSkills(
 
   return {
     ...profiles[0],
-    skills: skills.map((skill) => skill.skill_name)
+    skills
   };
 }

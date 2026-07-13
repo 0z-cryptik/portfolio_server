@@ -12,6 +12,7 @@ import { addNewSkill } from "./routeFunctions/addNewSkill.js";
 import { deleteProfileSkill } from "./routeFunctions/deleteProfileSkill.js";
 import { updateProject } from "./routeFunctions/updateProject.js";
 import { addProjectSkill } from "./routeFunctions/addProjectSkill.js";
+import { deleteProjectSkill } from "./routeFunctions/deleteProjectSkill.js";
 
 const app = express();
 app.use(cors());
@@ -49,6 +50,13 @@ app.post(
   "/api/profile/:id/projects/skills/",
   (req: Request, res: Response) => {
     addProjectSkill(req, res, pool);
+  }
+);
+
+app.delete(
+  "/api/profile/:id/projects/skills/",
+  (req: Request, res: Response) => {
+    deleteProjectSkill(req, res, pool);
   }
 );
 

@@ -16,15 +16,15 @@ export async function getUserProfile(req: Request, res: Response, pool: Pool){
         return;
       }
 
-      const [skillRows] = await pool.query<Skill[]>(
-        `SELECT s.skill_name 
+      const [skills] = await pool.query<Skill[]>(
+        `SELECT s.skill_name, s.skill_id 
              FROM skills s 
              INNER JOIN profile_skills ps ON s.skill_id = ps.skill_id
              WHERE ps.profile_id = ?`,
         [profileId]
       );
 
-      const skills = skillRows.map((row) => row.skill_name);
+      //const skills = skillRows.map((row) => row.skill_name);
 
       res.json({
         ...profileRows[0],

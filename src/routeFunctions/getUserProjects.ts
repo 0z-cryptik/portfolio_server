@@ -20,7 +20,7 @@ export async function getUserProjects(
     }
 
     const [projectSkills]: any = await pool.query(
-      `SELECT ps.project_id, s.skill_name 
+      `SELECT ps.project_id, s.skill_name, s.skill_id 
              FROM project_skills ps INNER JOIN skills s 
              ON ps.skill_id = s.skill_id
              WHERE ps.project_id IN (?)`,
@@ -34,15 +34,9 @@ export async function getUserProjects(
         return ps.project_id === project.project_id;
       });
 
-      // STEP 2: Extract just the string names from those matching rows
-      const skillNamesOnly = matchingSkillRows.map((ps: any) => {
-        return ps.skill_name;
-      });
-
-      // STEP 3: Combine everything into the final project object
       return {
         ...project,
-        skills: skillNamesOnly
+        skills: matchingSkillRows
       };
     });
 

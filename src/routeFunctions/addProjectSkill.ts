@@ -11,21 +11,21 @@ export async function addProjectSkill(
   const { newSkill, projectId } = req.body;
 
   if (!newSkill) {
-    res.status(400).json({ error: "New value is an empty string" });
+    res.status(400).json({ error: "newSkill is an empty string" });
     return;
   }
 
   if (typeof newSkill !== "string") {
     res
       .status(400)
-      .json({ error: "Invalid Type! new value is not a string" });
+      .json({ error: "Invalid Type! newSkill is not a string" });
     return;
   }
 
   if (typeof projectId !== "string") {
     res
       .status(400)
-      .json({ error: "Invalid type! profile_id is not a string" });
+      .json({ error: "Invalid type! projectId is not a string" });
     return;
   }
 
