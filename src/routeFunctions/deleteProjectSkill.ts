@@ -30,8 +30,8 @@ export async function deleteProjectSkill(
 
   try {
     const [deleteOperation] = await pool.query<ResultSetHeader>(
-      `DELETE FROM project_skills WHERE skill_id = ?`,
-      [skillId]
+      `DELETE FROM project_skills WHERE skill_id = ? AND project_id = ?`,
+      [skillId, projectId]
     );
 
     if (deleteOperation.affectedRows === 0) {
