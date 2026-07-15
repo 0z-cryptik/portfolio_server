@@ -2,34 +2,23 @@ import type { Request, Response } from "express";
 import type { ResultSetHeader } from "mysql2";
 import type { Pool } from "../types/customTypes.js";
 import { getUserProjects } from "./getUserProjects.js";
-import { updateShowOnCv } from "./updateShowOnCV.js";
 
-export async function updateProject(
+export async function updateShowOnCv(
   req: Request,
   res: Response,
   pool: Pool
 ) {
   const { field, newValue, projectId } = req.body;
 
-  if (field === "show_on_cv") {
-    await updateShowOnCv(req, res, pool);
-    return;
-  }
-
   if (!field) {
     res.status(400).json({ error: "No specified field" });
     return;
   }
 
-  if (!newValue) {
-    res.status(400).json({ error: "New value is an empty string" });
-    return;
-  }
-
-  if (typeof newValue !== "string") {
+  if (typeof newValue !== "boolean") {
     res
       .status(400)
-      .json({ error: "Invalid Type! new value is not a string" });
+      .json({ error: "Invalid Type! new value is not a boolean" });
     return;
   }
 
@@ -45,13 +34,7 @@ export async function updateProject(
     return;
   }
 
-  const allowedFields = [
-    "title",
-    "description",
-    "repo_link",
-    "live_link",
-    "see_how_it_works"
-  ];
+  const allowedFields = ["show_on_cv"];
 
   if (!allowedFields.includes(field)) {
     res.status(400).json({ error: "Invalid field" });
@@ -61,7 +44,7 @@ export async function updateProject(
   try {
     const [updateResult] = await pool.query<ResultSetHeader>(
       `UPDATE projects SET ${field} = ? WHERE project_id = ?`,
-      [newValue.trim(), projectId]
+      [newValue, projectId]
     );
 
     if (updateResult.affectedRows === 0) {

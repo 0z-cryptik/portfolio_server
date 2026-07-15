@@ -10,7 +10,7 @@ export async function getUserProjects(
 
   try {
     const [projects] = await pool.query<Project[]>(
-      "SELECT project_id, title, description, repo_link, live_link FROM projects WHERE profile_id = ?",
+      "SELECT project_id, title, description, repo_link, live_link, backend_repo, show_on_cv, see_how_it_works FROM projects WHERE profile_id = ?",
       [profileId]
     );
 
