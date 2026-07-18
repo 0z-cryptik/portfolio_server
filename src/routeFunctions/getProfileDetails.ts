@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import type { Pool, Profile, Skill } from "../types/customTypes.js";
-import type { RowDataPacket } from "mysql2";
 
 export async function getUserProfile(req: Request, res: Response, pool: Pool){
     const profileId = req.params.id;

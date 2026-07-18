@@ -13,6 +13,8 @@ import { deleteProfileSkill } from "./routeFunctions/deleteProfileSkill.js";
 import { updateProject } from "./routeFunctions/updateProject.js";
 import { addProjectSkill } from "./routeFunctions/addProjectSkill.js";
 import { deleteProjectSkill } from "./routeFunctions/deleteProjectSkill.js";
+import { addNewProject } from "./routeFunctions/addNewProject.js";
+import { deleteProject } from "./routeFunctions/deleteProject.js";
 
 const app = express();
 app.use(cors());
@@ -42,23 +44,31 @@ app.delete("/api/profile/:id/skills", (req: Request, res: Response) => {
 });
 
 // PROJECTS
-app.put("/api/profile/:id/projects/", (req: Request, res: Response) => {
+app.put("/api/profile/:id/projects", (req: Request, res: Response) => {
   updateProject(req, res, pool);
 });
 
 app.post(
-  "/api/profile/:id/projects/skills/",
+  "/api/profile/:id/projects/skills",
   (req: Request, res: Response) => {
     addProjectSkill(req, res, pool);
   }
 );
 
 app.delete(
-  "/api/profile/:id/projects/skills/",
+  "/api/profile/:id/projects/skills",
   (req: Request, res: Response) => {
     deleteProjectSkill(req, res, pool);
   }
 );
+
+app.post("/api/profile/:id/projects", (req: Request, res: Response) => {
+  addNewProject(req, res, pool);
+});
+
+app.delete("/api/profile/:id/projects", (req: Request, res: Response) => {
+  deleteProject(req, res, pool);
+});
 
 const PORT = process.env.PORT || 3000;
 
