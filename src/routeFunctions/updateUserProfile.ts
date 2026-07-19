@@ -40,7 +40,15 @@ export async function updateUserProfile(
     return;
   }
 
-  const allowedFields = ["full_name", "email", "about_me", "skills"];
+  const allowedFields = [
+    "full_name",
+    "email",
+    "about_me",
+    "skills",
+    "github_url",
+    "linkedin_url",
+    "twitter_url"
+  ];
 
   if (!allowedFields.includes(field)) {
     res.status(400).json({ error: "Invalid field" });

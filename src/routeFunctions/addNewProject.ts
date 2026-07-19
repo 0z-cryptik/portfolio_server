@@ -11,6 +11,7 @@ interface NewProjectDetails {
   repoLink: string;
   seeHowItWorks?: string;
   skillIds: number[];
+  showOnCV: boolean;
 }
 
 export async function addNewProject(
@@ -19,8 +20,18 @@ export async function addNewProject(
   pool: Pool
 ) {
   const profileId = req.params.id;
+
+  if (!profileId || typeof profileId !== "string") {
+    res.status(400).json({ error: "profile Id is not a valid string" });
+    return;
+  }
+
   const newProjectDetails: NewProjectDetails = req.body;
-  const { projectName, description, repoLink } = newProjectDetails;
+  const { projectName, description, repoLink, showOnCV } =
+    newProjectDetails;
+
+  console.log(newProjectDetails);
+
   const [trimmedProjectName, trimmedDescription, trimmedRepoLink] = [
     projectName.trim(),
     description.trim(),
@@ -42,12 +53,19 @@ export async function addNewProject(
   try {
     const columns = ["title", "description", "repo_link", "profile_id"];
     const placeholders = ["?", "?", "?", "?"];
-    const values = [
+    const values: (string | number)[] = [
       trimmedProjectName,
       trimmedDescription,
       trimmedRepoLink,
       profileId
     ];
+
+    if (typeof showOnCV === "boolean") {
+      let value = showOnCV ? 1 : 0;
+      columns.push("show_on_cv");
+      placeholders.push("?");
+      values.push(value);
+    }
 
     if (backendRepo) {
       columns.push("backend_repo");
