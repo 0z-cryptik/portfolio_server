@@ -30,8 +30,6 @@ export async function addNewProject(
   const { projectName, description, repoLink, showOnCV } =
     newProjectDetails;
 
-  console.log(newProjectDetails);
-
   const [trimmedProjectName, trimmedDescription, trimmedRepoLink] = [
     projectName.trim(),
     description.trim(),
