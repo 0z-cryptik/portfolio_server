@@ -50,14 +50,33 @@ export async function addNewProject(
   const seeHowItWorks = newProjectDetails.seeHowItWorks?.trim() || "";
   const liveLink = newProjectDetails.liveLink?.trim() || "";
 
+  const connection = await pool.getConnection();
+
   try {
-    const columns = ["title", "description", "repo_link", "profile_id"];
-    const placeholders = ["?", "?", "?", "?"];
+    await connection.beginTransaction();
+
+    // shift existing projects by 1 position so new one appears at the top
+    await connection.query(
+      `UPDATE projects SET display_order = display_order + 1 WHERE profile_id = ?`,
+      [profileId]
+    );
+
+    const columns = [
+      "title",
+      "description",
+      "repo_link",
+      "profile_id",
+      "display_order"
+    ];
+
+    const placeholders = ["?", "?", "?", "?", "?"];
+
     const values: (string | number)[] = [
       trimmedProjectName,
       trimmedDescription,
       trimmedRepoLink,
-      profileId
+      profileId,
+      1 // newly added project appears at the top
     ];
 
     if (typeof showOnCV === "boolean") {
@@ -85,7 +104,7 @@ export async function addNewProject(
       values.push(liveLink);
     }
 
-    const [newlyCreatedProject] = await pool.query<ResultSetHeader>(
+    const [newlyCreatedProject] = await connection.query<ResultSetHeader>(
       `INSERT INTO projects (${columns.join(", ")}) 
     VALUES (${placeholders.join(", ")})`,
       values
@@ -97,14 +116,19 @@ export async function addNewProject(
     );
 
     // bulk insert
-    await pool.query(
+    await connection.query(
       `INSERT INTO project_skills (skill_id, project_id) VALUES ?`,
       [skillsAndProjectIds]
     );
 
+    await connection.commit();
+
     getUserProjects(req, res, pool);
   } catch (e: any) {
+    await connection.rollback();
     console.error(e);
     res.status(500).json({ error: "Error creating project" });
+  } finally {
+    connection.release();
   }
 }

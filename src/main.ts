@@ -15,6 +15,7 @@ import { addProjectSkill } from "./routeFunctions/addProjectSkill.js";
 import { deleteProjectSkill } from "./routeFunctions/deleteProjectSkill.js";
 import { addNewProject } from "./routeFunctions/addNewProject.js";
 import { deleteProject } from "./routeFunctions/deleteProject.js";
+import { reorderProjects } from "./routeFunctions/reorderProjects.js";
 
 const app = express();
 app.use(cors());
@@ -68,6 +69,10 @@ app.post("/api/profile/:id/projects", (req: Request, res: Response) => {
 
 app.delete("/api/profile/:id/projects", (req: Request, res: Response) => {
   deleteProject(req, res, pool);
+});
+
+app.put("/api/projects/reorder", (req: Request, res: Response) => {
+  reorderProjects(req, res, pool);
 });
 
 const PORT = process.env.PORT || 3000;
