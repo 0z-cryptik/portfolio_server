@@ -32,7 +32,7 @@ export function getDatabasePool(): Pool {
   // 2. Only add `ssl` if running in production
   if (process.env.NODE_ENV === "production") {
     poolOptions.ssl = {
-      rejectUnauthorized: true
+      rejectUnauthorized: false
     };
   }
 
