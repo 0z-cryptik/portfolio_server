@@ -17,7 +17,7 @@ async function fetchSkills(
   profileId: string
 ): Promise<Skill[]> {
   const [skillRows] = await pool.query<Skill[]>(
-    `SELECT s.skill_name 
+    `SELECT s.skill_name, s.skill_id 
         FROM skills s INNER JOIN profile_skills ps
         ON s.skill_id = ps.skill_id
         WHERE ps.profile_id = ?`,

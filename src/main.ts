@@ -16,6 +16,7 @@ import { deleteProjectSkill } from "./routeFunctions/deleteProjectSkill.js";
 import { addNewProject } from "./routeFunctions/addNewProject.js";
 import { deleteProject } from "./routeFunctions/deleteProject.js";
 import { reorderProjects } from "./routeFunctions/reorderProjects.js";
+import { requireAdminSecret } from "./routeFunctions/checkAdminKey.js";
 
 const app = express();
 app.use(cors());
@@ -32,25 +33,42 @@ app.get("/api/profile/:id/projects", (req: Request, res: Response) => {
   getUserProjects(req, res, pool);
 });
 
-app.put("/api/profile/:id/", (req: Request, res: Response) => {
-  updateUserProfile(req, res, pool);
-});
+app.put(
+  "/api/profile/:id/",
+  requireAdminSecret,
+  (req: Request, res: Response) => {
+    updateUserProfile(req, res, pool);
+  }
+);
 
-app.post("/api/profile/:id/skills", (req: Request, res: Response) => {
-  addNewSkill(req, res, pool);
-});
+app.post(
+  "/api/profile/:id/skills",
+  requireAdminSecret,
+  (req: Request, res: Response) => {
+    addNewSkill(req, res, pool);
+  }
+);
 
-app.delete("/api/profile/:id/skills", (req: Request, res: Response) => {
-  deleteProfileSkill(req, res, pool);
-});
+app.delete(
+  "/api/profile/:id/skills",
+  requireAdminSecret,
+  (req: Request, res: Response) => {
+    deleteProfileSkill(req, res, pool);
+  }
+);
 
 // PROJECTS
-app.put("/api/profile/:id/projects", (req: Request, res: Response) => {
-  updateProject(req, res, pool);
-});
+app.put(
+  "/api/profile/:id/projects",
+  requireAdminSecret,
+  (req: Request, res: Response) => {
+    updateProject(req, res, pool);
+  }
+);
 
 app.post(
   "/api/profile/:id/projects/skills",
+  requireAdminSecret,
   (req: Request, res: Response) => {
     addProjectSkill(req, res, pool);
   }
@@ -58,22 +76,35 @@ app.post(
 
 app.delete(
   "/api/profile/:id/projects/skills",
+  requireAdminSecret,
   (req: Request, res: Response) => {
     deleteProjectSkill(req, res, pool);
   }
 );
 
-app.post("/api/profile/:id/projects", (req: Request, res: Response) => {
-  addNewProject(req, res, pool);
-});
+app.post(
+  "/api/profile/:id/projects",
+  requireAdminSecret,
+  (req: Request, res: Response) => {
+    addNewProject(req, res, pool);
+  }
+);
 
-app.delete("/api/profile/:id/projects", (req: Request, res: Response) => {
-  deleteProject(req, res, pool);
-});
+app.delete(
+  "/api/profile/:id/projects",
+  requireAdminSecret,
+  (req: Request, res: Response) => {
+    deleteProject(req, res, pool);
+  }
+);
 
-app.put("/api/projects/reorder", (req: Request, res: Response) => {
-  reorderProjects(req, res, pool);
-});
+app.put(
+  "/api/projects/reorder",
+  requireAdminSecret,
+  (req: Request, res: Response) => {
+    reorderProjects(req, res, pool);
+  }
+);
 
 const PORT = process.env.PORT || 3000;
 

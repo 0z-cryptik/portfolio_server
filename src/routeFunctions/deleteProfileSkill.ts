@@ -10,13 +10,14 @@ export async function deleteProfileSkill(
 ) {
   const { skillId } = req.body;
   const profileId = req.params.id;
+  console.log(skillId, profileId)
 
   if (typeof profileId !== "string") {
     res.status(400).json({ error: "Invalid profile ID" });
     return;
   }
 
-  if (!skillId || typeof skillId !== "string" || !skillId.trim()) {
+  if (!skillId || typeof skillId !== "string" || !skillId.trim() || skillId === "undefined") {
     res
       .status(400)
       .json({ error: "SkillId must be a valid, non-empty string" });
