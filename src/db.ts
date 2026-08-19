@@ -18,18 +18,21 @@ export function getDatabasePool(): Pool {
     return globalThis.__dbPool;
   }
 
-  // 1. Define base pool options without the `ssl` key
+  // 1. Strip `ssl-mode` or other incompatible query parameters from the URI string
+  const cleanUri = process.env.DATABASE_URL.replace(/[\?&]ssl-mode=[^&]*/gi, "");
+
+  // 2. Define pool options optimized for Vercel Serverless
   const poolOptions: mysql.PoolOptions = {
-    uri: process.env.DATABASE_URL,
+    uri: cleanUri,
     waitForConnections: true,
-    connectionLimit: 3,
+    connectionLimit: 2,         // Keep connection count low for serverless
     queueLimit: 0,
-    idleTimeout: 10000,
-    enableKeepAlive: true,
-    keepAliveInitialDelay: 0
+    connectTimeout: 10000,      // Timeout connection attempts after 10s
+    maxIdle: 1,                 // Immediately close unused idle connections
+    idleTimeout: 30000          // Close idle connections after 30 seconds
   };
 
-  // 2. Only add `ssl` if running in production
+  // 3. Attach SSL explicitly in production
   if (process.env.NODE_ENV === "production") {
     poolOptions.ssl = {
       rejectUnauthorized: false
